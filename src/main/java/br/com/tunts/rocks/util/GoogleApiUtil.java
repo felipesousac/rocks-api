@@ -44,6 +44,8 @@ public class GoogleApiUtil {
      * @return An authorized Credential object.
      * @throws IOException If the credentials.json file cannot be found.
      */
+
+    // Método retirado pela documentação do Google Sheets que faz a autenticação do usuário a utilizar a aplicação
     public static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
             throws IOException {
         // Load client secrets.
@@ -64,12 +66,15 @@ public class GoogleApiUtil {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-
-    public List<List<Object>> getDataFromSheet() throws IOException, GeneralSecurityException {
+    // Método que irá atualizar os dados da planilha
+    public List<List<Object>> updateStudentsSituation() throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+
         // Id da planilha do desafio
         final String spreadsheetId = "1YLp32Pl0S9jdgSuag3jnKnN_LN8MKezK5fMjjrB2vx4";
+
+        // Dimensão da planilha com os dados a serem lidos pela aplicação
         final String range = "engenharia_de_software!A4:H";
 
         Sheets service =
@@ -79,6 +84,8 @@ public class GoogleApiUtil {
         ValueRange response = service.spreadsheets().values()
                 .get(spreadsheetId, range)
                 .execute();
+
+        // Linhas da planilha são retornadas inicialmente como uma lista de Objects
         List<List<Object>> values = response.getValues();
 
         // Armazena os valores das celulas na planilha
@@ -107,7 +114,7 @@ public class GoogleApiUtil {
                 ValueRange body = new ValueRange()
                         .setValues(Collections.singletonList(update.get(0)));
 
-                // Atualiza celula na planilha
+                // Atualiza célula "Situação"
                 service.spreadsheets().values().update(spreadsheetId, "engenharia_de_software!G" + cell, body)
                         .setValueInputOption("USER_ENTERED")
                         .execute();
@@ -115,16 +122,18 @@ public class GoogleApiUtil {
                 body = new ValueRange()
                         .setValues(Collections.singletonList(update.get(1)));
 
-                // Atualiza celula na planilha
+                // Atualiza célula "Nota para Aprovação Final"
                 service.spreadsheets().values().update(spreadsheetId, "engenharia_de_software!H" + cell, body)
                         .setValueInputOption("USER_ENTERED")
                         .execute();
             } else {
                 // Chama função que irá calcular as médias dos alunos e guarda sua situação em um array
                 ArrayList<String> arr = calcAverages(currentLine.get(3), currentLine.get(4), currentLine.get(5));
+
                 ValueRange body = new ValueRange()
                         .setValues(Collections.singletonList(Collections.singletonList(arr.get(0))));
 
+                // Atualiza célula "Situação"
                 service.spreadsheets().values().update(spreadsheetId, "engenharia_de_software!G" + cell, body)
                         .setValueInputOption("USER_ENTERED")
                         .execute();
@@ -132,6 +141,7 @@ public class GoogleApiUtil {
                 body = new ValueRange()
                         .setValues(Collections.singletonList(Collections.singletonList(arr.get(1))));
 
+                // Atualiza célula "Nota para Aprovação Final"
                 service.spreadsheets().values().update(spreadsheetId, "engenharia_de_software!H" + cell, body)
                         .setValueInputOption("USER_ENTERED")
                         .execute();
@@ -141,7 +151,7 @@ public class GoogleApiUtil {
         return values;
     }
 
-    //Função que calcula as medias dos alunos
+    //Função que calcula as médias dos alunos e retorna um array contendo as informações necessárias para a função de atualização
     static ArrayList<String> calcAverages(String p1, String p2, String p3)  {
         Integer average = (int) Math.ceil((Float.parseFloat(p1) + Float.parseFloat(p2) + Float.parseFloat(p3)) / 3);
         ArrayList<String> arr = new ArrayList<>();
@@ -165,8 +175,4 @@ public class GoogleApiUtil {
         }
         return arr;
     }
-
-//    public static void main(String... args) throws IOException, GeneralSecurityException {
-//
-//    }
 }

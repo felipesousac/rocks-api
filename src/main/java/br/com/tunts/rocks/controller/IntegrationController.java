@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 public class IntegrationController {
@@ -16,13 +14,8 @@ public class IntegrationController {
     @Autowired
     private GoogleApiService googleApiService;
 
-    @GetMapping("/test")
-    public String test() {
-        return "Testando api";
-    }
-
     @GetMapping("/data")
-    public List<List<Object>> getDataFromGoogleSheets() throws GeneralSecurityException, IOException {
+    public String updateData() throws GeneralSecurityException, IOException {
         return googleApiService.readDataFromGoogleSheet();
     }
 

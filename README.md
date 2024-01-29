@@ -29,7 +29,7 @@ Após acessar a planilha:
 
 * Na aba extensões, acessar "Apps Script"
 * Na nova janela que será aberta, entrar na opção "Editor"
-* Certifique-se que o arquivo "basics.gs" esteja selecionado
+* Certifique-se que o arquivo "Exodia.gs" esteja selecionado
 * Clique em executar
 
 Após a execução do mesmo, volte para a aba da planilha e veja as situações dos alunos inseridas dinamicamente pelo script.
@@ -47,14 +47,15 @@ Pré-requisitos: Java 17 e Gradle
 git clone git@github.com:felipesousac/rocks-api.git
 
 # Certificar que está dentro da pasta clonada e executar o projeto
+gradlew bootRun
 
-# Após executar o projeto no servido local, acessar a seguinte url
+# Após executar o projeto no servidor local, acessar a seguinte url
 http://localhost:8080/data
 ```
 
 Essa url irá enviar uma requisição do tipo GET a Api escrita em java que está integrada ao Google Sheets Api, fazendo com que a planilha contendo os dados dos aluno seja editada pela própria aplicação.
 
-Voltando para a planilha os dados já estarão atualizados conforme as regras de negócio do desafio.
+Voltando para a planilha os dados já estarão atualizados conforme as regras do desafio.
 
 #### Considerações dessa solução
 
