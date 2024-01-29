@@ -33,3 +33,31 @@ Após acessar a planilha:
 * Clique em executar
 
 Após a execução do mesmo, volte para a aba da planilha e veja as situações dos alunos inseridas dinamicamente pelo script.
+
+### Solução com Java/Spring Boot
+
+Antes de prosseguir, apagar os dados inseridos pela solução anterior para averiguarem o funcionamento dessa solução.
+
+Pelas regras de autenticação da própria Api da Google, eu preciso adicionar manualmente os e-mails permitidos para concluirem com sucesso a autenticação necessária do teste dessa aplicação. Então antes de completarem os requisitos abaixo, preciso de um e-mail para liberar o acesso de vocês.
+
+Pré-requisitos: Java 17 e Gradle
+
+```bash
+# Clonar repositório
+git clone git@github.com:felipesousac/rocks-api.git
+
+# Certificar que está dentro da pasta clonada e executar o projeto
+
+# Após executar o projeto no servido local, acessar a seguinte url
+http://localhost:8080/data
+```
+
+Essa url irá enviar uma requisição do tipo GET a Api escrita em java que está integrada ao Google Sheets Api, fazendo com que a planilha contendo os dados dos aluno seja editada pela própria aplicação.
+
+Voltando para a planilha os dados já estarão atualizados conforme as regras de negócio do desafio.
+
+#### Considerações dessa solução
+
+A camada Controller da aplicação faz uma requisição do tipo GET ao ser acessado o endereço "/data", nessa requisição é chamada a camada Service, que por sua vez, faz chamada com a camada Utils da aplicação, essa camada conta com os métodos de autenticação, leitura e gravação de dados encontrados na [documentação do Google Sheets Api](https://developers.google.com/sheets/api/guides/concepts?hl=pt-br), além do mais o método que calcula as médias dos alunos também se encontra nesse arquivo.
+
+Ao ler a descrição do desafio com o link contendo a documentação da Google, acreditei que foi um convite para ser desenvolvida uma aplicação fora da plataforma do Google Sheets, assim, essa resolução "extra" foi implementada.
